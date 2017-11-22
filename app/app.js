@@ -1,9 +1,28 @@
-/**
- * app.js
- *
- * This is the entry file for the application, only setup and boilerplate
- * code.
- */
+/*
+-------------------------
+cat
+------------------------
+
+-name -thumnail filter3
+
+
+query = 'cat'
+filters = ['name', 'thumbnail']
+
+object_arrys = [{name: 'cat', t: 'google.com/png'}, {name: 'dog', t: 'google.com/pjpg'}]
+
+
+function filterByName(entity) {
+  return entity['name'] == 'query';
+}
+
+let results = object_arrays.filter(filterByName);
+
+results = [{name: 'cat', t: 'google.com/png'}]
+*/
+
+
+
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
 
@@ -16,6 +35,7 @@ import axios from 'axios';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
+
 
 
 // Import root app
@@ -49,6 +69,10 @@ import { translationMessages } from './i18n';
 
 // Import CSS reset and Global Styles
 import './global-styles';
+
+// import sub-components
+import Filters from './filters';
+
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -150,35 +174,41 @@ if (!window.Intl) {
 //   }
 // ];
 
-class Search extends React.Component {
+export class Search extends React.Component {
  
   constructor(props) {
     super(props);
     this.state = {
       searchString: "",
-      photos: []
+      photos: null,
+      facets: []
     };
     this.handleChange = this.handleChange.bind(this);
   }
-
+  setFacets(new_facets) {
+    this.setState({
+      facets: new_facets
+    });
+  }
   componentDidMount() {
     
     var photos = this;
     axios
-    .get(`https://jsonplaceholder.typicode.com/photos`)
+    .get(`https://jsonplaceholder.typicode.com/photos?albumId=1&albumId=2`)
     .then(res => this.setState({ photos: res.data }))
     .catch(err => console.log(err))
 
     this.setState({
       photos: photos
     });
-    this.refs.search.focus();
+    
   }
 
   handleChange() {
     this.setState({
       searchString: this.refs.search.value
     });
+    this.refs.search.focus();
   }
 
   render() {
@@ -187,37 +217,48 @@ class Search extends React.Component {
 
     if (search.length > 0) {
       _photos = _photos.filter(function(photo) {
-        return photo.title.toLowerCase().match(search);
-        return photo.albumId.toLowerCase().match(search);
+
+        let combined_string = photo.albumId + photo.thumbnailUrl.toLowerCase() + photo.url + photo.id + photo.title.toLowerCase();
+          
+        return combined_string.toLowerCase().match(search);
       });
     }
 
-    return (
-      <div>
-        <h3>React - simple search</h3>
+    if (_photos != null && Array.isArray(_photos)) {
+      return (
         <div>
-          <input
-            type="text"
-            value={this.state.searchString}
-            ref="search"
-            onChange={this.handleChange}
-            placeholder="type name here"
-          />
-          {_photos.map(l => {
-            return (
-              <ul key={l.id.toString()}>
-                <li>
-                  {l.name} <img src={l.thumbnailUrl}/>
-                  {l.id} <a href="#">{l.title}</a>
-                </li>
-              </ul>
-            );
-          })}
+          <h3>React - filter and search</h3>
+          <div>
+            <Filters photos={_photos} setFacets={this.setFacets}/>
+            <input style = {{float: 'left'}}
+              type="text"
+              value={this.state.searchString}
+              ref="search"
+              onChange={this.handleChange}
+              placeholder="type name here"
+            />
+            
+            {_photos.map(l => {
+              return (
+                <div className="card" style={{border: '1px solid #454545', width: '150px', height: '270px', margin: '10px', display: 'inline-block', float: 'left', clear: 'left'}} key={l.id.toString()}>
+                  <div>
+                    {l.name} <img src={l.thumbnailUrl} style={{display: 'block'}}/>
+                    {l.id} <a href="#">{l.title}</a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return <span> Loading ... </span>;
+    }
   }
 }
+
+
+
 
 ReactDOM.render(<Search />, document.getElementById("app"));
 //end search functionality
