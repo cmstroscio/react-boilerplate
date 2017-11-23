@@ -18,24 +18,30 @@ class Filters extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			facets: []
+			facets: [],
+			searchData: {}
 		}
 		this.handleChange = this.handleChange.bind(this);
 	}
 	
 	handleChange(e) {
-		const { checked, value } = e.target;
+		const { checked, value, name } = e.target;
 		let { facets } = this.state;
+		let searchData = this.state.searchData;
+		searchData[name] = value;
+		
+	
+		 
 		if(checked && facets.indexOf(value) === -1) {
 			facets.push(value);
 		}else {
 			facets = facets.filter(i => i !== value)
 		}
-		
-		this.props.setFacets(facets);
+	
+		//this.props.setFacets(facets);
 		this.setState({
-			facets
-		});
+			facets, searchData
+		}); 
 	}
 	render() {
 		const { facets } = this.state;
@@ -48,7 +54,8 @@ class Filters extends React.Component {
 					<input
 						type='checkbox'
 						value='1'
-						checked={facets.indexOf('albumId') !== -1}
+						name='albumId'
+						checked={this.state.facets.indexOf('albumId') !== -1}
 						onChange={this.handleChange} />
 					1
 				</label>
@@ -58,7 +65,8 @@ class Filters extends React.Component {
 					<input
 						type='checkbox'
 						value='2'
-						checked={facets.indexOf('albumId') !== -1}
+						name='albumId'
+						checked={this.state.facets.indexOf('albumId') !== -1}
 						onChange={this.handleChange} />
 					2
 				</label>
@@ -69,7 +77,8 @@ class Filters extends React.Component {
 					<input
 						type='checkbox'
 						value='1'
-						checked={facets.indexOf('albumId') !== -1}
+						name='id'
+						checked={this.state.facets.indexOf('albumId') !== -1}
 						onChange={this.handleChange} />
 					1
 				</label>
@@ -78,8 +87,9 @@ class Filters extends React.Component {
 				<label>
 					<input
 						type='checkbox'
+						name='id'
 						value='2'
-						checked={facets.indexOf('albumId') !== -1}
+						checked={this.state.facets.indexOf('albumId') !== -1}
 						onChange={this.handleChange} />
 					2
 				</label>
@@ -88,8 +98,9 @@ class Filters extends React.Component {
 				<label>
 					<input
 						type='checkbox'
+						name='id'
 						value='3'
-						checked={facets.indexOf('albumId') !== -1}
+						checked={this.state.facets.indexOf('albumId') !== -1}
 						onChange={this.handleChange} />
 					3
 				</label>
@@ -99,8 +110,9 @@ class Filters extends React.Component {
 				<label>
 					<input
 						type='checkbox'
-						value='Products'
-						checked={facets.indexOf('http://placehold.it/600/f66b97') !== -1}
+						value='url'
+						name='url'
+						checked={this.state.facets.indexOf('http://placehold.it/600/f66b97') !== -1}
 						onChange={this.handleChange} />
 					http://placehold.it/600/f66b97
 				</label>
@@ -109,8 +121,9 @@ class Filters extends React.Component {
 				<label>
 					<input
 						type='checkbox'
-						value='Products'
-						checked={facets.indexOf('http://placehold.it/600/d32776') !== -1}
+						value='url'
+						name='url'
+						checked={this.state.facets.indexOf('http://placehold.it/600/d32776') !== -1}
 						onChange={this.handleChange} />
 					http://placehold.it/600/d32776
 				</label>
@@ -121,7 +134,8 @@ class Filters extends React.Component {
 					<input
 						type='checkbox'
 						value='Title'
-						checked={facets.indexOf('accusamus ea aliquid et amet sequi nemo') !== -1}
+						name='title'
+						checked={this.state.facets.indexOf('accusamus ea aliquid et amet sequi nemo') !== -1}
 						onChange={this.handleChange} />
 					accusamus ea aliquid et amet sequi nemo
 				</label>
@@ -131,7 +145,8 @@ class Filters extends React.Component {
 					<input
 						type='checkbox'
 						value='Title'
-						checked={facets.indexOf('harum velit vero totam') !== -1}
+						name='title'
+						checked={this.state.facets.indexOf('harum velit vero totam') !== -1}
 						onChange={this.handleChange} />
 					harum velit vero totam
 				</label>
