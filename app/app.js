@@ -1,28 +1,3 @@
-/*
--------------------------
-cat
-------------------------
-
--name -thumnail filter3
-
-
-query = 'cat'
-filters = ['name', 'thumbnail']
-
-object_arrys = [{name: 'cat', t: 'google.com/png'}, {name: 'dog', t: 'google.com/pjpg'}]
-
-
-function filterByName(entity) {
-  return entity['name'] == 'query';
-}
-
-let results = object_arrays.filter(filterByName);
-
-results = [{name: 'cat', t: 'google.com/png'}]
-*/
-
-
-
 // Needed for redux-saga es6 generator support
 import 'babel-polyfill';
 
@@ -130,49 +105,6 @@ if (!window.Intl) {
 } else {
   render(translationMessages);
 }
-//start search functionality
-// let users = [
-//   {
-//     name: "Leonard Rogers",
-//     email: "egestas@justonecante.org"
-//   },
-//   {
-//     name: "Walker Pace",
-//     email: "erat.eget.tincidunt@idsapienCras.org"
-//   },
-//   {
-//     name: "Lance Mcintyre",
-//     email: "Nam.ligula@quamvel.net"
-//   },
-//   {
-//     name: "Rudyard Conway",
-//     email: "sit@nunc.org"
-//   },
-//   {
-//     name: "Chadwick Oneal",
-//     email: "laoreet@dictum.edu"
-//   },
-//   {
-//     name: "Isaiah Kent",
-//     email: "diam.dictum@lobortisquam.co.uk"
-//   },
-//   {
-//     name: "Griffith Perkins",
-//     email: "congue@acfermentumvel.ca"
-//   },
-//   {
-//     name: "Lawrence Wheeler",
-//     email: "ac.libero@Duisac.org"
-//   },
-//   {
-//     name: "Preston Walker",
-//     email: "egestas.rhoncus@eudui.co.uk"
-//   },
-//   {
-//     name: "Simon Brewer",
-//     email: "nunc.sed@Fuscediamnunc.co.uk"
-//   }
-// ];
 
 export class Search extends React.Component {
  
@@ -180,8 +112,13 @@ export class Search extends React.Component {
     super(props);
     this.state = {
       searchString: "",
-      photos: null,
-      facets: []
+      photos: [],
+      facets: {
+        'albumId' : [],
+        'id' : [],
+        'title': [],
+        'url' : []
+      }
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -210,26 +147,58 @@ export class Search extends React.Component {
     });
     this.refs.search.focus();
   }
-
+  // shouldUseAlbumIdFilter() {
+  //   return this.state.facets['albumId'].length > 0;
+  // }
+  // shouldUseIdFilter() {
+  //   return this.state.facets['id'].length > 0;
+  // }
+  shouldUseUrlFilter() {
+    return this.state.facets['url'].length > 0;
+  }
+  shouldUseTitleFilter() {
+    return this.state.facets['title'].length > 0;
+  }
   render() {
     let _photos = this.state.photos;
     let search = this.state.searchString.trim().toLowerCase();
+    
+    // if (search.length > 0) {
+      // _photos = _photos.filter(function(photo) {
 
-    if (search.length > 0) {
-      _photos = _photos.filter(function(photo) {
-
-        let combined_string = photo.albumId + photo.thumbnailUrl.toLowerCase() + photo.url + photo.id + photo.title.toLowerCase();
+      //   // let combined_string = photo.albumId + photo.thumbnailUrl.toLowerCase() + photo.url + photo.id + photo.title.toLowerCase();
           
-        return combined_string.toLowerCase().match(search);
-      });
-    }
-
+      //   return combined_string.toLowerCase().match(search);
+      // });
+      
+    // }
+    // Arrow functions  :   ( ar1, ar2) => { console.log('abc') }   ===>   function(ar1, ar2) { console.log('abc')  }
     if (_photos != null && Array.isArray(_photos)) {
+      // if (this.shouldUseAlbumIdFilter()) {
+      //   _photos = _photos.filter((photo) => {
+      //     return this.state.facets['albumId'].indexOf(photo['albumId']) !== -1;
+      //   });
+      // }
+      // if (this.shouldUseIdFilter()) {
+      //   _photos = _photos.filter((photo) => {
+      //     return this.state.facets['id'].indexOf(photo['id']) !== -1;
+      //   });
+      // }
+      if (this.shouldUseUrlFilter()) {
+        _photos = _photos.filter((photo) => {
+          return this.state.facets['url'].indexOf(photo['url']) !== -1;
+        });
+      }
+      if (this.shouldUseTitleFilter()) {
+        _photos = _photos.filter((photo) => {
+          return this.state.facets['title'].indexOf(photo['title']) !== -1;
+        });
+      }
       return (
         <div>
           <h3>React - filter and search</h3>
           <div>
-            <Filters photos={_photos} setFacets={this.setFacets}/>
+            <Filters photos={_photos} setFacetsForFilter={(facets) => this.setFacets(facets)}/>
             <input style = {{float: 'left'}}
               type="text"
               value={this.state.searchString}
