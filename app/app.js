@@ -163,15 +163,15 @@ export class Search extends React.Component {
     let _photos = this.state.photos;
     let search = this.state.searchString.trim().toLowerCase();
     
-    // if (search.length > 0) {
-      // _photos = _photos.filter(function(photo) {
+    if (search.length > 0) {
+      _photos = _photos.filter(function(photo) {
 
-      //   // let combined_string = photo.albumId + photo.thumbnailUrl.toLowerCase() + photo.url + photo.id + photo.title.toLowerCase();
+        let combined_string = photo.albumId + photo.thumbnailUrl.toLowerCase() + photo.url + photo.id + photo.title.toLowerCase();
           
-      //   return combined_string.toLowerCase().match(search);
-      // });
+        return combined_string.toLowerCase().match(search);
+      });
       
-    // }
+    }
     // Arrow functions  :   ( ar1, ar2) => { console.log('abc') }   ===>   function(ar1, ar2) { console.log('abc')  }
     if (_photos != null && Array.isArray(_photos)) {
       // if (this.shouldUseAlbumIdFilter()) {
