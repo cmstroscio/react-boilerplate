@@ -10,8 +10,7 @@ import axios from 'axios';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
-
-
+import Pagination from 'rc-pagination';
 
 // Import root app
 import App from 'containers/App';
@@ -47,6 +46,7 @@ import './global-styles';
 
 // import sub-components
 import Filters from './filters';
+import PaginationComponent from './pagination';
 
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
@@ -167,7 +167,7 @@ export class Search extends React.Component {
       _photos = _photos.filter(function(photo) {
 
         let combined_string = photo.albumId + photo.thumbnailUrl.toLowerCase() + photo.url + photo.id + photo.title.toLowerCase();
-          
+            
         return combined_string.toLowerCase().match(search);
       });
       
@@ -206,7 +206,17 @@ export class Search extends React.Component {
               onChange={this.handleChange}
               placeholder="type name here"
             />
-            
+            {
+            <div>
+            <Pagination
+              onChange={this.onChange}
+              // current={this.state.current}
+              total={50}
+              showLessItems
+              showTitle={true}
+            />
+          </div>
+            } 
             {_photos.map(l => {
               return (
                 <div className="card" style={{border: '1px solid #454545', width: '150px', height: '270px', margin: '10px', display: 'inline-block', float: 'left', clear: 'left'}} key={l.id.toString()}>
