@@ -47,6 +47,7 @@ import './global-styles';
 // import sub-components
 import Filters from './filters';
 import PaginationComponent from './pagination';
+import Panel from './panel';
 
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
@@ -147,13 +148,13 @@ export class Search extends React.Component {
     });
     this.refs.search.focus();
   }
-  // shouldUseAlbumIdFilter() {
-  //   return this.state.facets['albumId'].length > 0;
-  // }
-  // shouldUseIdFilter() {
-  //   return this.state.facets['id'].length > 0;
-  // }
-  shouldUseUrlFilter() {
+  shouldUseAlbumIdFilter() {
+    return this.state.facets['albumId'].length > 0;
+  }
+  shouldUseIdFilter() {
+    return this.state.facets['id'].length > 0;
+  }
+  shouldUseUrlFilter() { 
     return this.state.facets['url'].length > 0;
   }
   shouldUseTitleFilter() {
@@ -174,16 +175,16 @@ export class Search extends React.Component {
     }
     // Arrow functions  :   ( ar1, ar2) => { console.log('abc') }   ===>   function(ar1, ar2) { console.log('abc')  }
     if (_photos != null && Array.isArray(_photos)) {
-      // if (this.shouldUseAlbumIdFilter()) {
-      //   _photos = _photos.filter((photo) => {
-      //     return this.state.facets['albumId'].indexOf(photo['albumId']) !== -1;
-      //   });
-      // }
-      // if (this.shouldUseIdFilter()) {
-      //   _photos = _photos.filter((photo) => {
-      //     return this.state.facets['id'].indexOf(photo['id']) !== -1;
-      //   });
-      // }
+      if (this.shouldUseAlbumIdFilter()) {
+        _photos = _photos.filter((photo) => {
+          return this.state.facets['albumId'].indexOf(photo['albumId']) !== -1;
+        });
+      }
+      if (this.shouldUseIdFilter()) {
+        _photos = _photos.filter((photo) => {
+          return this.state.facets['id'].indexOf(photo['id']) !== -1;
+        });
+      }
       if (this.shouldUseUrlFilter()) {
         _photos = _photos.filter((photo) => {
           return this.state.facets['url'].indexOf(photo['url']) !== -1;
@@ -199,7 +200,7 @@ export class Search extends React.Component {
           <h3>React - filter and search</h3>
           <div>
             <Filters photos={_photos} setFacetsForFilter={(facets) => this.setFacets(facets)}/>
-            <input style = {{float: 'left'}}
+            <input style = {{float: 'left', border: '1px solid #454545'}}
               type="text"
               value={this.state.searchString}
               ref="search"
@@ -208,25 +209,27 @@ export class Search extends React.Component {
             />
             {
             <div>
-            <Pagination
-              onChange={this.onChange}
-              // current={this.state.current}
-              total={50}
-              showLessItems
-              showTitle={true}
-            />
-          </div>
+              <Pagination 
+                onChange={this.onChange}
+                // current={this.state.current}
+                total={50}
+                showLessItems
+                showTitle={true}
+              />
+            </div>
             } 
-            {_photos.map(l => {
-              return (
-                <div className="card" style={{border: '1px solid #454545', width: '150px', height: '270px', margin: '10px', display: 'inline-block', float: 'left', clear: 'left'}} key={l.id.toString()}>
-                  <div>
-                    {l.name} <img src={l.thumbnailUrl} style={{display: 'block'}}/>
-                    {l.id} <a href="#">{l.title}</a>
+            <div style={{display: 'flex', flexAlign: 'flex-start', flexFlow: 'row wrap'}}>
+              {_photos.map(l => {
+                return (
+                  <div className="card" style={{border: '1px solid #454545', width: '150px', height: '270px', margin: '10px', display: 'inline-block', float: 'left', clear: 'left'}} key={l.id.toString()}>
+                    <div>
+                      {l.name} <img src={l.thumbnailUrl} style={{display: 'block'}}/>
+                      {l.id} <a href="#">{l.title}</a>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>  
           </div>
         </div>
       );

@@ -1,0 +1,20 @@
+ul {
+  li {
+    
+  }
+}
+
+.Panel {
+  border: 1px solid #eee;
+  background: lightyellow;
+  margin: 10px 0;
+  overflow: hidden;
+  transition: 1s;
+  &.hide {
+    height: 0;
+  }
+  &.open {
+    height: 50px;
+  }
+  
+}

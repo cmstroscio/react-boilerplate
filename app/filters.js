@@ -11,8 +11,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
-//may want to npm uninstall this, if not used
-import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
+import Pagination from 'rc-pagination';
 
 class Filters extends React.Component {
 	constructor(props) {
@@ -59,7 +58,7 @@ class Filters extends React.Component {
 						type='checkbox'
 						value='1'
 						name='albumId'
-						checked={this.state.facets['albumId'].toString().indexOf('1') !== -1}
+						checked={this.state.facets['albumId'].indexOf('1') !== -1}
 						onChange={this.handleChange} />
 					1
 				</label>
@@ -91,8 +90,8 @@ class Filters extends React.Component {
 				<label>
 					<input
 						type='checkbox'
-						name='id'
 						value='2'
+						name='id'
 						checked={this.state.facets['id'].indexOf('2') !== -1}
 						onChange={this.handleChange} />
 					2
@@ -102,8 +101,8 @@ class Filters extends React.Component {
 				<label>
 					<input
 						type='checkbox'
-						name='id'
 						value='3'
+						name='id'
 						checked={this.state.facets['id'].indexOf('3') !== -1}
 						onChange={this.handleChange} />
 					3
