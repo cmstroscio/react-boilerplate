@@ -1,0 +1,26 @@
+.collapsible-hero {
+  background: url(http://via.placeholder.com/1600x500) no-repeat center; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: grid;
+  // min-width: 100%;
+  height: 500px;
+}
+
+
+.collapsible-hero--content {
+  grid-column-start: 2;
+  grid-column-end: five;
+  grid-row-start: row1-start;
+  grid-row-end: 3;
+}
+
+
+#close {
+    float:right;
+    display:inline-block;
+    padding:2px 5px;
+    background:#ccc;
+}

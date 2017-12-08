@@ -45,17 +45,17 @@ class Panel extends React.Component {
   }
 }
 
-const panels = [
-  {
-    title: 'First panel',
-  },
-  {
-    title: 'Second panel',
-  },
-  {
-    title: 'Third panel',
-  },
-];
+// const panels = [
+//   {
+//     title: 'First panel',
+//   },
+//   {
+//     title: 'Second panel',
+//   },
+//   {
+//     title: 'Third panel',
+//   },
+// ];
 
 export default Panel;
 

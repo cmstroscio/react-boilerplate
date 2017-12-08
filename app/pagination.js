@@ -30,7 +30,7 @@ class PaginationComponent extends React.Component {
 	    });
 	  }
 	  render() {
-	    return <Pagination onChange={this.onChange} current={this.state.current} total={10} />;
+	    return <Pagination onChange={e => this.onChange(e)} current={this.state.current} total={10} />;
 	  }
 }
 
