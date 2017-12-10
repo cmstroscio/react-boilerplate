@@ -5,16 +5,19 @@
   -o-background-size: cover;
   background-size: cover;
   display: grid;
-  // min-width: 100%;
+  grid-gap: 20px;
+  grid-template-columns: 200px 200px 200px;
   height: 500px;
 }
 
 
 .collapsible-hero--content {
-  grid-column-start: 2;
-  grid-column-end: five;
-  grid-row-start: row1-start;
-  grid-row-end: 3;
+  grid-column: 2 / span 2;
+  // grid-column-start: 2;
+  // grid-column-end: five;
+  // grid-row-start: row1-start;
+  // grid-row-end: 3;
+  grid-row: 2 / span 4;
 }
 
 

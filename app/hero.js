@@ -35,13 +35,15 @@ class Hero extends React.Component {
 	render() {
 		return (
 			<section className="collapsible-hero">
-				<div>
-				<span id='close' onClick={this.close}>x</span>
-				<div className="collapsible-hero--content n-col-md-4 n-col-offset-3">
+				 
+				{
+					// <span id='close' onClick={this.close}>x</span>
+				}	
+				
+				<div className="collapsible-hero--content">
 					<h5>Customer Spotlight</h5>
 					<h1>Cerner is NetApp's 2017 Innovation Award Winner</h1>
 					<a className="button">See how they did it</a> 
-				</div>
 				</div>
 			</section>
 		)

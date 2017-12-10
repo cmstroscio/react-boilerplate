@@ -10,13 +10,7 @@ import axios from 'axios';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
-import 'panel.css';
-import 'css/netapp-library.min.css';
-// still need rc-pagination?
 import Pagination from 'rc-pagination';
-import 'css/card.css';
-
-
 
 // Import root app
 import App from 'containers/App';
@@ -54,8 +48,7 @@ import './global-styles';
 import Filters from './filters';
 import PaginationComponent from './pagination';
 import Panel from './panel';
-// import Card from './card';
-import Hero from './hero';
+
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -113,8 +106,7 @@ if (!window.Intl) {
 } else {
   render(translationMessages);
 }
-const   RESULT_OFFSET = 10;
-
+const RESULT_OFFSET = 10;
 export class Search extends React.Component {
  
   constructor(props) {
@@ -124,16 +116,15 @@ export class Search extends React.Component {
       all_photos: [],
       filtered_photos: [],
       facets: {
-        'albumId': [],
-        'id': [],
+        'albumId' : [],
+        'id' : [],
         'title': [],
-        'url': []
+        'url' : []
       }
     };
     this.handleChange = this.handleChange.bind(this);
     this.onPaginationChange = this.onPaginationChange.bind(this);
   }
-
   setFacets(new_facets) {
     this.setState({
       facets: new_facets
@@ -141,12 +132,11 @@ export class Search extends React.Component {
       this.setFilteredResults();
     });
   }
-
-  componentDidMount() {  
+  componentDidMount() {
     axios
     .get(`https://jsonplaceholder.typicode.com/photos?albumId=1&albumId=2`)
     .then(res => {
-      this.setState({ 
+      this.setState({
         all_photos: res.data,
         filtered_photos: res.data,
         current: 1
@@ -163,66 +153,64 @@ export class Search extends React.Component {
       this.refs.search.focus();
     });
   }
-
   shouldUseAlbumIdFilter() {
     return this.state.facets['albumId'].length > 0;
   }
   shouldUseIdFilter() {
     return this.state.facets['id'].length > 0;
   }
-  shouldUseUrlFilter() { 
+  shouldUseUrlFilter() {
     return this.state.facets['url'].length > 0;
   }
   shouldUseTitleFilter() {
     return this.state.facets['title'].length > 0;
   }
 
+
   setFilteredResults() {
-    let {all_photos: photos, searchString=''} = this.state;
+    let {all_photos: photos, searchString=''} = this.state; // Destructuring - MDN
     searchString = searchString.trim().toLowerCase();
-   
+
     if (this.shouldUseAlbumIdFilter()) {
-      _photos = _photos.filter((photo) => {
-      return this.state.facets['albumId'].indexOf(photo['albumId']) !== -1;
+      photos = photos.filter((photo) => {
+        return this.state.facets['albumId'].indexOf(photo['albumId'].toString()) !== -1;
       });
     }
     if (this.shouldUseIdFilter()) {
       photos = photos.filter((photo) => {
-      return this.state.facets['id'].indexOf(photo['id']) !== -1;
+        return this.state.facets['id'].indexOf(photo['id'].toString()) !== -1;
       });
     }
     if (this.shouldUseUrlFilter()) {
       photos = photos.filter((photo) => {
-      return this.state.facets['url'].indexOf(photo['url']) !== -1;
+        return this.state.facets['url'].indexOf(photo['url']) !== -1;
       });
     }
     if (this.shouldUseTitleFilter()) {
-      photos = _photos.filter((photo) => {
-      return this.state.facets['title'].indexOf(photo['title']) !== -1;
+      photos = photos.filter((photo) => {
+        return this.state.facets['title'].indexOf(photo['title']) !== -1;
       });
     }
     if (searchString.length > 0) {
       photos = photos.filter(function(photo) {
-        let combined_string = photo.albumId + photo.thumbnailUrl + photo.url + photo.id + photo.title;
+        let combined_string = photo.albumId + photo.thumbnailUrl.toLowerCase() + photo.url + photo.id + photo.title.toLowerCase();
         return combined_string.toLowerCase().match(searchString);
       });
     }
     this.setState({
-      filtered_photos: photos,
+      filtered_photos : photos,
       current: 1
     });
-  } 
-
+  }
+  
   onPaginationChange(e) {
     this.setState({
       current: e
     });
   }
-
   getPaginatedFinalResults() {
+    let {current, filtered_photos: photos} = this.state; // Desstructuring
 
-    let { current, filtered_photos: photos} = this.state;
-    
     // a = [1,2,   3,4,   5,6,   7,8]
     //                   --------
     // a = a.slice(4,6)
@@ -232,69 +220,50 @@ export class Search extends React.Component {
     //   (3 - 1)* 2, 3*2
     //   2*2, 6
     //   4, 6
-
-    photos = photos.slice((current - 1)*RESULT_OFFSET, current*RESULT_OFFSET);
+    
+    photos = photos.slice((current-1)*RESULT_OFFSET, current*RESULT_OFFSET);
     return photos;
   }
-
-
-
-
   render() {
     const photos = this.getPaginatedFinalResults();
-    if (typeof photos == 'undefined' || (Array.isArray(photos) && !photos.length)) {
+    if (typeof photos == 'undefined' ||  (Array.isArray(photos) && !photos.length)) {
       return <span> Loading ... </span>;
     }
-    // let _photos = this.state.photos;
-    // let search = this.state.searchString.trim().toLowerCase();
-    
-    // if (search.length > 0) {
-    //   _photos = _photos.filter(function(photo) {
-
-    //     let combined_string = photo.albumId + photo.thumbnailUrl.toLowerCase() + photo.url + photo.id + photo.title.toLowerCase();
-            
-    //     return combined_string.toLowerCase().match(search);
-    //   });
-      
-    // }
-    // Arrow functions  :   ( ar1, ar2) => { console.log('abc') }   ===>   function(ar1, ar2) { console.log('abc')  }
-
     return (
       <div>
-        <Hero/ >
-        <h3>React - filter and search</h3>
-        <div>
-          <Filters photos={photos} setFacetsForFilter={(facets) => this.setFacets(facets)}/>
-          <input style = {{float: 'left', border: '1px solid #454545'}}
-            type="text"
-            value={this.state.searchString}
-            ref="search"
-            onChange={(e) => this.handleChange(e)}
-            placeholder="type name here"
-          />
-          {
+          <h3>React - filter and search</h3>
           <div>
-            <Pagination 
-              onChange={this.onPaginationChange}
-              current={this.state.current}
-              pageSize = {10}
-              total={this.state.filtered_photos.length}
+            <Filters photos={photos} setFacetsForFilter={(facets) => this.setFacets(facets)}/>
+            <input style = {{float: 'left', border: '1px solid #454545'}}
+              type="text"
+              value={this.state.searchString}
+              ref="search"
+              onChange={(e) => this.handleChange(e)}
+              placeholder="type name here"
             />
-          </div>
-          } 
-          <div style={{display: 'flex', flexAlign: 'flex-start', flexFlow: 'row wrap'}}>
-            {photos.map(l => {
-              return (
-                <div className="card" style={{border: '1px solid #454545', width: '150px', height: '270px', margin: '10px', display: 'inline-block', float: 'left', clear: 'left'}} key={l.id.toString()}>
-                  <div>
-                    {l.name} <img src={l.thumbnailUrl} style={{display: 'block'}}/>
-                    {l.id} <a href="#">{l.title}</a>
+            {
+              <div>
+                <Pagination 
+                  onChange={this.onPaginationChange}
+                  current={this.state.current}
+                  pageSize={10}
+                  total={this.state.filtered_photos.length}
+                />
+              </div>
+            }
+            <div style={{display: 'flex', flexAlign: 'flex-start', flexFlow: 'row wrap'}}>
+              {photos.map(l => {
+                return (
+                  <div className="card" style={{border: '1px solid #454545', width: '150px', height: '270px', margin: '10px', display: 'inline-block', float: 'left', clear: 'left'}} key={l.id.toString()}>
+                    <div>
+                      {l.name} <img src={l.thumbnailUrl} style={{display: 'block'}}/>
+                      {l.id} <a href="#">{l.title}</a>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>  
           </div>
-        </div>
       </div>
     );
   }

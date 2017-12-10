@@ -12,6 +12,7 @@ import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
 import '../node_modules/rc-pagination/assets/index.css';
+import 'css/pagination.css'
 
 class PaginationComponent extends React.Component {
 	state = {
@@ -30,7 +31,7 @@ class PaginationComponent extends React.Component {
 	    });
 	  }
 	  render() {
-	    return <Pagination onChange={e => this.onChange(e)} current={this.state.current} total={10} />;
+	    return <Pagination className="pagination-wrapper" onChange={e => this.onChange(e)} current={this.state.current} total={10} />;
 	  }
 }
 
