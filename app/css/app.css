@@ -4,15 +4,27 @@
   grid-template-columns: 200px 200px 200px;
 }
 
-.header-searchbar {
-  grid column: 1 / span 12;
+
+.card-wrapper {
+  grid column: 3 / span 9;
 }
 
-.header-title {
-  text-align: center;
+
+//header
+.header {
+
 }
 
-.search-bar {
-  float: left;
-  border: 1px solid #454545;
+.header__heading {
+	padding: 20px;
+	text-align: center;
 }
+
+.header__search-bar {
+   float: right;
+   border: 1px solid #454545;
+   min-width: 220px;
+   padding: 5px;
+}
+
+

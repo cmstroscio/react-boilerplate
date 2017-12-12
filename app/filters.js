@@ -12,6 +12,7 @@ import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
 import Pagination from 'rc-pagination';
+import 'css/filters.css'
 
 class Filters extends React.Component {
 	constructor(props) {
@@ -49,8 +50,10 @@ class Filters extends React.Component {
 	render() {
 		const { facets } = this.state;
 		return (
-			<div className='container'>
-				<h3>Filters:</h3>
+			<div className="n-col-md-3">
+				{
+				//<h3>Filter Results By:</h3>
+				}
 				<h4>Album ID</h4>
 				<div className='checkbox'>
 				<label>

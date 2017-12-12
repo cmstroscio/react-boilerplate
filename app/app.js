@@ -12,6 +12,15 @@ import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
 import Pagination from 'rc-pagination';
 
+// import sub-components
+import Filters from './filters';
+import PaginationComponent from './pagination';
+import Panel from './panel';
+import Hero from './hero';
+
+import 'css/netapp-library.min.css';
+import 'css/app.css';
+
 // Import root app
 import App from 'containers/App';
 
@@ -44,10 +53,6 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 import './global-styles';
 
-// import sub-components
-import Filters from './filters';
-import PaginationComponent from './pagination';
-import Panel from './panel';
 
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
@@ -231,27 +236,35 @@ export class Search extends React.Component {
     }
     return (
       <div>
-          <h3>React - filter and search</h3>
-          <div>
-            <Filters photos={photos} setFacetsForFilter={(facets) => this.setFacets(facets)}/>
-            <input style = {{float: 'left', border: '1px solid #454545'}}
-              type="text"
-              value={this.state.searchString}
-              ref="search"
-              onChange={(e) => this.handleChange(e)}
-              placeholder="type name here"
-            />
-            {
-              <div>
-                <Pagination 
-                  onChange={this.onPaginationChange}
-                  current={this.state.current}
-                  pageSize={10}
-                  total={this.state.filtered_photos.length}
+          <Hero />
+          <div className="n-container">
+            <div className="n-row">
+              <div className="header n-clearfix">
+                <h2 className="header__heading"> Customer Stories</h2>
+                <input className="header__search-bar"
+                type="text"
+                value={this.state.searchString}
+                ref="search"
+                onChange={(e) => this.handleChange(e)}
+                placeholder="Search Customer Stories"
                 />
               </div>
-            }
-            <div style={{display: 'flex', flexAlign: 'flex-start', flexFlow: 'row wrap'}}>
+              <div className="n-row">
+                <div className="n-col-md-3"> Filter Results By:
+                </div>
+                <div className="n-col-md-9">
+                  <Pagination 
+                    onChange={this.onPaginationChange}
+                    current={this.state.current}
+                    pageSize={10}
+                    total={this.state.filtered_photos.length}
+                  />
+                </div>
+              </div>
+            </div>
+          <div>
+            <Filters photos={photos} setFacetsForFilter={(facets) => this.setFacets(facets)}/>
+            <div className="card-wrapper" style={{display: 'flex', flexAlign: 'flex-start', flexFlow: 'row wrap'}}>
               {photos.map(l => {
                 return (
                   <div className="card" style={{border: '1px solid #454545', width: '150px', height: '270px', margin: '10px', display: 'inline-block', float: 'left', clear: 'left'}} key={l.id.toString()}>
@@ -264,6 +277,7 @@ export class Search extends React.Component {
               })}
             </div>  
           </div>
+      </div>
       </div>
     );
   }
